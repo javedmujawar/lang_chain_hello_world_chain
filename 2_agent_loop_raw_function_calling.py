@@ -1,9 +1,7 @@
-import ollama
 from dotenv import load_dotenv
 from langchain.chat_models import init_chat_model
 from langchain.tools import tool
 from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
-from langsmith import traceable
 
 load_dotenv()
 
@@ -13,7 +11,7 @@ MODEL = "qwen3:1.7b"
 # ---- Tools (langchain @tool decorator) ---
 
 
-@traceable(run_type="tool")
+@tool
 def get_product_price(product: str) -> float:
     """Look up the price of a product in the catalog."""
     print(f"  >> Executing get_product_price(product='{product}')")
@@ -21,7 +19,7 @@ def get_product_price(product: str) -> float:
     return prices.get(product, 0)
 
 
-@traceable(run_type="tool")
+@tool
 def apply_discount(price: float, discount_tier: str) -> float:
     """apply a discount tire to a price and teturn the final price.
     Available tiers: bronze, silver, gold."""
